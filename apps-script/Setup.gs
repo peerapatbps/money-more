@@ -1,5 +1,11 @@
-// Run setupSheets_() once manually from the Apps Script editor to create
+// Run runSetup() once manually from the Apps Script editor to create
 // the 4 tabs with correct headers in a fresh Google Sheet.
+// (setupSheets_ itself can't be picked from the Run dropdown — Apps Script
+// hides any function whose name ends with "_" as "private".)
+
+function runSetup() {
+  setupSheets_();
+}
 
 function setupSheets_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
