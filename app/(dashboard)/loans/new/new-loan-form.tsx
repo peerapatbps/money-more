@@ -92,7 +92,7 @@ export function NewLoanForm() {
       const json = await res.json();
       if (json.error) throw new Error(json.error);
       toast.success("สร้างสัญญาเรียบร้อย");
-      router.push(`/debtors/${finalDebtorId}`);
+      router.push("/loans");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "เกิดข้อผิดพลาด");
     } finally {
