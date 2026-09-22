@@ -45,6 +45,8 @@ function route_(action, payload) {
       });
     case "listAllPayments":
       return readAll_("Payments");
+    case "listAllInstallments":
+      return readAll_("Installments");
     case "recordPayment":
       return recordPayment_(payload);
     case "earlyClose":

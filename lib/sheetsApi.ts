@@ -80,6 +80,7 @@ export const sheetsApi = {
     call<{ loan: Loan; installments: Installment[] }>("createLoan", data),
 
   listInstallments: (loanId: string) => call<Installment[]>("listInstallments", { loanId }),
+  listAllInstallments: () => call<Installment[]>("listAllInstallments"),
   listPayments: (loanId: string) => call<Payment[]>("listPayments", { loanId }),
   listAllPayments: () => call<Payment[]>("listAllPayments"),
 

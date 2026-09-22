@@ -25,6 +25,18 @@ export default async function DashboardLayout({ children }: { children: React.Re
               ปล่อยกู้ใหม่
             </Link>
             <Link
+              href="/loans"
+              className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+            >
+              สัญญาที่มีอยู่
+            </Link>
+            <Link
+              href="/calendar"
+              className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+            >
+              ปฏิทิน
+            </Link>
+            <Link
               href="/history"
               className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase transition-colors hover:text-foreground"
             >
