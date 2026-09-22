@@ -34,11 +34,14 @@ export function DebtorDetailClient({ debtor, loans }: { debtor: Debtor; loans: L
     .reduce((sum, l) => sum + l.outstandingPrincipal + l.outstandingInterest, 0);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-xl font-semibold">{debtor.name}</h1>
-        <p className="text-sm text-neutral-500">
-          {debtor.phone && `${debtor.phone} · `}ยอดคงเหลือรวม {thb(totalOutstanding)} บาท
+        <h1 className="font-heading text-2xl font-medium tracking-tight text-foreground">
+          {debtor.name}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {debtor.phone && `${debtor.phone} · `}ยอดคงเหลือรวม{" "}
+          <span className="tabular-nums text-foreground">{thb(totalOutstanding)}</span> บาท
         </p>
       </div>
 
@@ -121,20 +124,20 @@ function LoanCard({ detail, onChanged }: { detail: LoanDetail; onChanged: () => 
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-neutral-500">
-              <th className="p-1">งวด</th>
-              <th className="p-1">ครบกำหนด</th>
-              <th className="p-1 text-right">ยอด</th>
-              <th className="p-1">สถานะ</th>
+            <tr className="text-left text-muted-foreground">
+              <th className="p-1.5 font-normal">งวด</th>
+              <th className="p-1.5 font-normal">ครบกำหนด</th>
+              <th className="p-1.5 text-right font-normal">ยอด</th>
+              <th className="p-1.5 font-normal">สถานะ</th>
             </tr>
           </thead>
           <tbody>
             {installments.map((inst) => (
-              <tr key={inst.id} className="border-t">
-                <td className="p-1">{inst.seq}</td>
-                <td className="p-1">{new Date(inst.dueDate).toLocaleDateString("th-TH")}</td>
-                <td className="p-1 text-right">{thb(inst.amountDue)}</td>
-                <td className="p-1">
+              <tr key={inst.id} className="border-t border-border/70">
+                <td className="p-1.5">{inst.seq}</td>
+                <td className="p-1.5">{new Date(inst.dueDate).toLocaleDateString("th-TH")}</td>
+                <td className="p-1.5 text-right tabular-nums">{thb(inst.amountDue)}</td>
+                <td className="p-1.5">
                   <Badge
                     variant={
                       inst.status === "paid"
@@ -170,9 +173,11 @@ function LoanCard({ detail, onChanged }: { detail: LoanDetail; onChanged: () => 
         )}
 
         {loan.status === "active" && eligible && (
-          <Card className="border-green-300 bg-green-50">
+          <Card className="border border-accent/40 bg-accent/5 ring-0">
             <CardHeader>
-              <CardTitle className="text-base">มีโอกาสปิดยอดได้ — เก็บมาแล้ว {Math.round((collected / loan.totalDue) * 100)}%</CardTitle>
+              <CardTitle className="text-base text-accent">
+                มีโอกาสปิดยอดได้ — เก็บมาแล้ว {Math.round((collected / loan.totalDue) * 100)}%
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
@@ -210,8 +215,10 @@ function LoanCard({ detail, onChanged }: { detail: LoanDetail; onChanged: () => 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-neutral-500">{label}</p>
-      <p className="font-medium">{value}</p>
+      <p className="text-[0.65rem] font-medium tracking-[0.1em] text-muted-foreground uppercase">
+        {label}
+      </p>
+      <p className="mt-1 font-medium tabular-nums">{value}</p>
     </div>
   );
 }

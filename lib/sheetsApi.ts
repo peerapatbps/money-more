@@ -81,6 +81,7 @@ export const sheetsApi = {
 
   listInstallments: (loanId: string) => call<Installment[]>("listInstallments", { loanId }),
   listPayments: (loanId: string) => call<Payment[]>("listPayments", { loanId }),
+  listAllPayments: () => call<Payment[]>("listAllPayments"),
 
   recordPayment: (data: { loanId: string; amount: number; paymentDate: string; note?: string }) =>
     call<Payment>("recordPayment", data),

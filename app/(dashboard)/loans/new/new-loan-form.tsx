@@ -111,7 +111,7 @@ export function NewLoanForm() {
             <div className="flex flex-col gap-2">
               <Label>เลือกลูกหนี้เดิม</Label>
               <select
-                className="h-9 rounded-md border px-3 text-sm"
+                className="h-9 rounded-lg border border-input bg-transparent px-3 text-sm"
                 value={debtorId}
                 onChange={(e) => setDebtorId(e.target.value)}
               >
@@ -185,9 +185,9 @@ export function NewLoanForm() {
           <table className="border-collapse text-xs">
             <thead>
               <tr>
-                <th className="sticky left-0 bg-white border p-1">อัตรา \ ระยะเวลา</th>
+                <th className="sticky left-0 border border-border bg-card p-1.5">อัตรา \ ระยะเวลา</th>
                 {table.periods.map((p) => (
-                  <th key={p} className="border p-1 font-normal">
+                  <th key={p} className="border border-border p-1.5 font-normal text-muted-foreground">
                     {p}
                   </th>
                 ))}
@@ -196,7 +196,9 @@ export function NewLoanForm() {
             <tbody>
               {table.cells.map((row, i) => (
                 <tr key={table.rates[i]}>
-                  <td className="sticky left-0 bg-white border p-1 font-medium">{table.rates[i]}%</td>
+                  <td className="sticky left-0 border border-border bg-card p-1.5 font-medium">
+                    {table.rates[i]}%
+                  </td>
                   {row.map((cell) => {
                     const isSelected =
                       selected?.rate === cell.ratePercent && selected?.periods === cell.periods;
@@ -204,8 +206,8 @@ export function NewLoanForm() {
                       <td
                         key={cell.periods}
                         onClick={() => setSelected({ rate: cell.ratePercent, periods: cell.periods })}
-                        className={`cursor-pointer border p-1 text-right hover:bg-blue-50 ${
-                          isSelected ? "bg-blue-600 text-white hover:bg-blue-600" : ""
+                        className={`cursor-pointer border border-border p-1.5 text-right tabular-nums transition-colors hover:bg-accent/10 ${
+                          isSelected ? "bg-accent text-accent-foreground hover:bg-accent" : ""
                         }`}
                       >
                         {thb(cell.netInterest)}
@@ -217,7 +219,7 @@ export function NewLoanForm() {
             </tbody>
           </table>
           {selected && (
-            <p className="mt-2 text-sm text-neutral-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               เลือกแล้ว: {selected.rate}% × {selected.periods} {RATE_UNIT_LABEL[rateUnit]} → ดอกเบี้ยสุทธิ{" "}
               {thb(buildRateTable(principal).cells
                 .flat()
@@ -283,24 +285,24 @@ export function NewLoanForm() {
           {selected && schedule.length > 0 && (
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-neutral-500">
-                  <th className="p-1">งวด</th>
-                  <th className="p-1">ครบกำหนด (หน่วยที่)</th>
-                  <th className="p-1 text-right">ต้น</th>
-                  <th className="p-1 text-right">ดอกเบี้ย</th>
-                  <th className="p-1 text-right">รวม</th>
+                <tr className="text-left text-muted-foreground">
+                  <th className="p-1.5 font-normal">งวด</th>
+                  <th className="p-1.5 font-normal">ครบกำหนด (หน่วยที่)</th>
+                  <th className="p-1.5 text-right font-normal">ต้น</th>
+                  <th className="p-1.5 text-right font-normal">ดอกเบี้ย</th>
+                  <th className="p-1.5 text-right font-normal">รวม</th>
                 </tr>
               </thead>
               <tbody>
                 {schedule.map((row) => (
-                  <tr key={row.seq} className="border-t">
-                    <td className="p-1">{row.seq}</td>
-                    <td className="p-1">
+                  <tr key={row.seq} className="border-t border-border/70">
+                    <td className="p-1.5">{row.seq}</td>
+                    <td className="p-1.5">
                       +{row.dueOffset} {RATE_UNIT_LABEL[rateUnit]}
                     </td>
-                    <td className="p-1 text-right">{thb(row.principalPortion)}</td>
-                    <td className="p-1 text-right">{thb(row.interestPortion)}</td>
-                    <td className="p-1 text-right font-medium">{thb(row.amountDue)}</td>
+                    <td className="p-1.5 text-right tabular-nums">{thb(row.principalPortion)}</td>
+                    <td className="p-1.5 text-right tabular-nums">{thb(row.interestPortion)}</td>
+                    <td className="p-1.5 text-right font-medium tabular-nums">{thb(row.amountDue)}</td>
                   </tr>
                 ))}
               </tbody>

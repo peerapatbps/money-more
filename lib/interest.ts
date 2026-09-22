@@ -28,7 +28,7 @@ export interface RateTableCell {
 export function buildRateTable(
   principal: number,
   ratePercentRange: number[] = range(3, 15, 1),
-  periodsRange: number[] = range(3, 30, 1),
+  periodsRange: number[] = range(1, 30, 1),
 ): { rates: number[]; periods: number[]; cells: RateTableCell[][] } {
   const cells = ratePercentRange.map((rate) =>
     periodsRange.map((periods) => {

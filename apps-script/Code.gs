@@ -43,6 +43,8 @@ function route_(action, payload) {
       return readAll_("Payments").filter(function (p) {
         return p.loanId === payload.loanId;
       });
+    case "listAllPayments":
+      return readAll_("Payments");
     case "recordPayment":
       return recordPayment_(payload);
     case "earlyClose":

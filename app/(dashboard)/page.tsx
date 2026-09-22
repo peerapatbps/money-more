@@ -18,81 +18,87 @@ export default async function SummaryPage() {
 
   if (error || !summary) {
     return (
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+      <div className="border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         ยังเชื่อมต่อ Apps Script API ไม่ได้ ({error}) — ตั้งค่า SHEETS_API_URL / SHEETS_API_SECRET ใน .env.local
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div className="flex flex-col gap-10">
+      <div className="grid grid-cols-2 gap-px overflow-hidden border border-border/70 bg-border/70 sm:grid-cols-4">
         <KpiCard label="เงินต้นคงค้าง" value={thb(summary.outstandingPrincipal)} />
         <KpiCard label="ดอกเบี้ยที่คาดว่าจะได้รับ" value={thb(summary.expectedInterest)} />
         <KpiCard label="ลูกหนี้ที่ยัง Active" value={String(summary.activeLoanCount)} />
         <KpiCard label="เกินกำหนดชำระ" value={String(summary.overdueCount)} tone="danger" />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>ครบกำหนดวันนี้ / เกินกำหนด</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
+      <section className="flex flex-col gap-4">
+        <h2 className="font-heading text-lg font-medium text-foreground">
+          ครบกำหนดวันนี้ / เกินกำหนด
+        </h2>
+        <div className="flex flex-col divide-y divide-border/70 border-y border-border/70">
           {summary.dueToday.length === 0 && (
-            <p className="text-sm text-neutral-500">ไม่มีรายการที่ต้องเก็บวันนี้</p>
+            <p className="py-6 text-sm text-muted-foreground">ไม่มีรายการที่ต้องเก็บวันนี้</p>
           )}
           {summary.dueToday.map(({ loan, debtor, installment }) => (
             <Link
               key={installment.id}
               href={`/debtors/${debtor.id}`}
-              className="flex items-center justify-between rounded-md border p-3 text-sm hover:bg-neutral-50"
+              className="flex items-center justify-between py-4 text-sm transition-colors hover:bg-muted/60"
             >
               <div>
                 <span className="font-medium">{debtor.name}</span>{" "}
-                <span className="text-neutral-500">งวดที่ {installment.seq}</span>
+                <span className="text-muted-foreground">งวดที่ {installment.seq}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span>{thb(installment.amountDue)}</span>
+              <div className="flex items-center gap-3">
+                <span className="tabular-nums">{thb(installment.amountDue)}</span>
                 {installment.status === "overdue" && <Badge variant="destructive">เกินกำหนด</Badge>}
               </div>
             </Link>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>มีโอกาสปิดยอดได้ (เก็บมาแล้ว ≥ 80%)</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
+      <section className="flex flex-col gap-4">
+        <h2 className="font-heading text-lg font-medium text-foreground">
+          มีโอกาสปิดยอดได้ (เก็บมาแล้ว ≥ 80%)
+        </h2>
+        <div className="flex flex-col divide-y divide-border/70 border-y border-border/70">
           {summary.eligibleForClose.length === 0 && (
-            <p className="text-sm text-neutral-500">ยังไม่มีลูกหนี้ที่เข้าเงื่อนไข</p>
+            <p className="py-6 text-sm text-muted-foreground">ยังไม่มีลูกหนี้ที่เข้าเงื่อนไข</p>
           )}
           {summary.eligibleForClose.map(({ loan, debtor, collected, totalDue }) => (
             <Link
               key={loan.id}
               href={`/debtors/${debtor.id}`}
-              className="flex items-center justify-between rounded-md border p-3 text-sm hover:bg-neutral-50"
+              className="flex items-center justify-between py-4 text-sm transition-colors hover:bg-muted/60"
             >
               <span className="font-medium">{debtor.name}</span>
-              <span className="text-neutral-500">
+              <span className="text-muted-foreground tabular-nums">
                 {thb(collected)} / {thb(totalDue)} ({Math.round((collected / totalDue) * 100)}%)
               </span>
             </Link>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }
 
 function KpiCard({ label, value, tone }: { label: string; value: string; tone?: "danger" }) {
   return (
-    <Card>
-      <CardContent className="p-4">
-        <p className="text-xs text-neutral-500">{label}</p>
-        <p className={`mt-1 text-xl font-semibold ${tone === "danger" ? "text-red-600" : ""}`}>{value}</p>
-      </CardContent>
-    </Card>
+    <div className="bg-background p-5">
+      <p className="text-[0.65rem] font-medium tracking-[0.12em] text-muted-foreground uppercase">
+        {label}
+      </p>
+      <p
+        className={`mt-2 font-heading text-2xl font-medium tabular-nums ${
+          tone === "danger" ? "text-destructive" : "text-foreground"
+        }`}
+      >
+        {value}
+      </p>
+    </div>
   );
 }
